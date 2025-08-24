@@ -1,0 +1,36 @@
+[user]
+  name = Wodann
+  email = Wodann@users.noreply.github.com
+
+[core]
+  autocrlf = input
+
+[init]
+  defaultBranch = main
+
+[fetch]
+  prune = true
+
+[commit]
+  gpgsign = true
+
+[pull]
+  ff = only
+  
+[push]
+  default = current
+
+[rebase]
+  autosquash = true
+
+[alias]
+  amend = commit --amend --reuse-message=HEAD
+  au = add -u
+  aup = add -u --patch
+  branches = for-each-ref --sort=-committerdate --format=\"%(color:blue)%(authordate:relative)\t%(color:red)%(authorname)\t%(color:white)%(color:bold)%(refname:short)\" refs/remotes
+  cb = checkout -b
+  pf = push --force-with-lease
+  st = status
+
+[rerere]
+  enabled = true
