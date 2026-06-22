@@ -1,0 +1,8 @@
+Anthropic.claude-code
+esbenp.prettier-vscode
+github.vscode-github-actions
+mutantdino.resourcemonitor
+NomicFoundation.hardhat-solidity
+rust-lang.rust-analyzer
+tamasfe.even-better-toml
+vadimcn.vscode-lldb
