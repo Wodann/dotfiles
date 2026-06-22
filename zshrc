@@ -1,13 +1,18 @@
 SCRIPT_DIR="${0:A:h}"
 
+export ZSH="${ZSH:-$HOME/.oh-my-zsh}"
+# Left empty so the self-contained prompt below runs instead of an OMZ theme
+ZSH_THEME=""
 plugins=(git rust)
 
-# git completion
+# git completion (fpath must be set before oh-my-zsh.sh runs compinit)
 fpath=($SCRIPT_DIR/completions $fpath)
 
-# Increase history size and save it in a volume for persistence
+# Large in-memory + on-disk history on a persistent volume. Set before sourcing
+# OMZ so its lib/history.zsh floors don't lower these. OMZ only ever raises them.
 HISTFILE=/workspaces/zsh_history
 HISTSIZE=1000000
+SAVEHIST=1000000
 
 # Config
 export SHELL=zsh
@@ -16,7 +21,15 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export GPG_TTY=$(tty)
 
-# zsh syntax highlighting
+source $ZSH/oh-my-zsh.sh
+
+# Home/End fallbacks: OMZ only binds these via terminfo, but the VS Code
+# integrated terminal and tmux send raw ^[[H / ^[[F (and ^[[1~ / ^[[4~), which
+# OMZ leaves unbound — fill that gap.
+bindkey "^[[H" beginning-of-line; bindkey "^[[1~" beginning-of-line
+bindkey "^[[F" end-of-line;       bindkey "^[[4~" end-of-line
+
+# zsh syntax highlighting (sourced last, after OMZ defines its ZLE widgets)
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Self-contained port of the `devcontainers` Oh My Zsh theme

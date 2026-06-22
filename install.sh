@@ -7,7 +7,14 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 sudo apt update
 sudo apt install -y zsh zsh-syntax-highlighting
 
-# Source this repo's zshrc from ~/.zshrc (idempotent: avoids duplicate lines on re-run)
+# Install Oh My Zsh using a plain git clone so the installer never rewrites
+# ~/.zshrc; our zshrc sources it explicitly. Skip if already present.
+export ZSH="${ZSH:-$HOME/.oh-my-zsh}"
+if [ ! -d "$ZSH" ]; then
+  git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git "$ZSH"
+fi
+
+# Source this repo's zshrc from ~/.zshrc Skip if already present.
 zshrc_source="source $SCRIPT_DIR/zshrc"
 if ! grep -qxF "$zshrc_source" "$HOME/.zshrc" 2>/dev/null; then
   echo "$zshrc_source" >> "$HOME/.zshrc"
