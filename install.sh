@@ -5,7 +5,13 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 # Install dependencies
 sudo apt update
-sudo apt install -y zsh zsh-syntax-highlighting
+sudo apt install -y locales zsh zsh-syntax-highlighting
+
+# Generate the en_US.UTF-8 locale that zshrc selects via LANG/LC_ALL. Without it, glibc
+# falls back to the C (non-UTF-8) locale and zsh miscounts the multi-byte prompt glyph (➜)
+# width, making tab-completion redraw double the typed command (e.g. "lsls").
+sudo sed -i 's/^# *\(en_US.UTF-8 UTF-8\)/\1/' /etc/locale.gen
+sudo locale-gen
 
 # Install Oh My Zsh using a plain git clone so the installer never rewrites
 # ~/.zshrc; our zshrc sources it explicitly. Skip if already present.
